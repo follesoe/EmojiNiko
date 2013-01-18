@@ -23,3 +23,5 @@ Simply drop ``emojiniko.rb`` into a folder containing a git repository, and issu
 
 This will generate a calendar for the current month, starting on the first. The output.html file depends on [emojify.js](http://hassankhan.github.com/emojify.js/), so ``emojify.js`` and ``emojify.css`` must be present in the same directory as the ``output.html`` file is hosted from.
 
+:facepunch:
+
