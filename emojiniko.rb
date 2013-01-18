@@ -12,15 +12,15 @@ def days_in_month(year, month)
 end
 
 emoji_commits.each_line do |line|
-	parts = line.split(';')
-	email = parts[0]
-	date = Date.parse(parts[1])
-	emojis = parts[2].scan(/:[a-z]+:/)
+  parts = line.split(';')
+  email = parts[0]
+  date = Date.parse(parts[1])
+  emojis = parts[2].scan(/:[a-z]+:/)
   
   unless data.key?(email) then    
     days = days_in_month(date.year, date.month)
-		data[email] = Array.new(days) { Array.new }
-	end
+    data[email] = Array.new(days) { Array.new }
+  end
 
   data[email][date.day].concat emojis  
 end
