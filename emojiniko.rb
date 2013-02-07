@@ -9,9 +9,6 @@ month = if ARGV.count == 1
 
 emoji_commits = %x(git log --since='#{month.year}-#{month.month}-1' --pretty=format:'%aE;%aD;%s'')
 
-puts month
-puts emoji_commits
-
 def days_in_month(year, month)
   (Date.new(year, 12, 31) << (12 - month)).day
 end
