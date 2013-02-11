@@ -43,7 +43,7 @@ __END__
   <body>    
 <% 
 data.each do |month, user| 
-  days = days_in_month(month)
+days = days_in_month(month)
 %>
     <table>
       <thead>
@@ -52,7 +52,7 @@ data.each do |month, user|
         </tr>
         <tr>
           <th></th>
-<% (1..days_in_month(month)).each do |day| %>
+<% (1..days).each do |day| %>
           <th><%= day %></th>
 <% end %>
         </tr>
@@ -65,11 +65,11 @@ data.each do |month, user|
             <td><%= emojis.join(' ') %></td>
 <% end %>
         </tr>
-<% end %>        
+<% end %>       
       </tbody>
     </table>  
-<% end %>
-    <script src='http://hassankhan.github.com/emojify.js/javascripts/emojify.min.js'></script>
+<% end %>    
+    <script src='http:////hassankhan.github.com/emojify.js/javascripts/emojify.min.js'></script>
     <script>
       emojify.setConfig({
           emojify_tag_type: 'div',
