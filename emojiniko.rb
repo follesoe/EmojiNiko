@@ -37,6 +37,7 @@ puts ERB.new(DATA.readlines.join, 0, '>').result(binding)
 __END__
 <html>
   <head>
+    <title><%= "Calendar for project #{File.basename(Dir.getwd)} generated #{Time.now}" %></title>
     <link rel='stylesheet' type='text/css' href='emojify.css'>
   </head>
   <body>    
