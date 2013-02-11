@@ -38,7 +38,7 @@ __END__
 <html>
   <head>
     <title><%= "Calendar for project #{File.basename(Dir.getwd)} generated #{Time.now}" %></title>
-    <link rel='stylesheet' type='text/css' href='emojify.css'>
+    <link rel='stylesheet' type='text/css' href='http://hassankhan.github.com/emojify.js/stylesheets/emojify.min.css'>
   </head>
   <body>    
 <% 
@@ -69,7 +69,7 @@ data.each do |month, user|
       </tbody>
     </table>  
 <% end %>
-    <script src='emojify.js'></script>
+    <script src='http://hassankhan.github.com/emojify.js/javascripts/emojify.min.js'></script>
     <script>
       emojify.setConfig({
           emojify_tag_type: 'div',
