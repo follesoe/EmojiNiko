@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'date'
 require 'erb'
 
@@ -7,7 +6,7 @@ month = if ARGV.count == 1
         then Date.parse(ARGV[0]) 
         else Date.new(Date.today.year, Date.today.month, 1) end
 
-emoji_commits = %x(git log --since='#{month.year}-#{month.month}-1' --pretty=format:'%aE;%aD;%s'')
+emoji_commits = %x(git log --since='#{month.year}-#{month.month}-1' --pretty=format:'%aE;%aD;%s')
 
 def days_in_month(year, month)
   (Date.new(year, 12, 31) << (12 - month)).day
