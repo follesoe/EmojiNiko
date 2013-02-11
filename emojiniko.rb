@@ -2,31 +2,35 @@ require 'date'
 require 'erb'
 
 data = {}
-month = if ARGV.count == 1 
-        then Date.parse(ARGV[0]) 
-        else Date.new(Date.today.year, Date.today.month, 1) end
 
-emoji_commits = %x(git log --since='#{month.year}-#{month.month}-1' --pretty=format:'%aE;%aD;%s')
+commits = if ARGV.count == 1
+          then 
+            from = Date.parse(ARGV[0])
+            %x(git log --since='#{month.year}-#{month.month}-1' --pretty=format:'%aE;%aD;%s')
+          else %x(git log --pretty=format:'%aE;%aD;%s') end
 
-def days_in_month(year, month)
-  (Date.new(year, 12, 31) << (12 - month)).day
+def days_in_month(date)
+  (Date.new(date.year, 12, 31) << (12 - date.month)).day
 end
 
-emoji_commits.each_line do |line|
+commits.each_line do |line|
   parts = line.split(';')
   email = parts[0]
   date = Date.parse(parts[1])
+  first_in_month = Date.new(date.year, date.month, 1)  
   emojis = parts[2].scan(/:[a-z]+:/)
-  
-  unless data.key?(email) then    
-    days = days_in_month(date.year, date.month)
-    data[email] = Array.new(days) { Array.new }
+
+  unless data.key?(first_in_month) then
+    data[first_in_month] = {}
   end
 
-  data[email][date.day].concat emojis  
+  unless data[first_in_month].key?(email) then
+    days = days_in_month(date)
+    data[first_in_month][email] = Array.new(days) { Array.new }
+  end
+  
+  data[first_in_month][email][date.day].concat emojis  
 end
-
-days = days_in_month(month.year, month.month)
 
 puts ERB.new(DATA.readlines.join, 0, '>').result(binding)
 
@@ -35,27 +39,35 @@ __END__
   <head>
     <link rel='stylesheet' type='text/css' href='emojify.css'>
   </head>
-  <body>
+  <body>    
+<% 
+data.each do |month, user| 
+  days = days_in_month(month)
+%>
     <table>
       <thead>
         <tr>
+          <th colspan="<%= days %>"><%= month %></th>
+        </tr>
+        <tr>
           <th></th>
-<% (1..days).each do |day| %>
+<% (1..days_in_month(month)).each do |day| %>
           <th><%= day %></th>
 <% end %>
         </tr>
       </thead>
       <tbody>
-<% data.each do |user, emojis_by_date| %>
+<% user.each do |email, emojis_by_date| %>
         <tr>
-          <td><%= user %></td>
+            <td><%= email %></td>
 <% emojis_by_date.each do |emojis| %>
-          <td><%= emojis.join(' ') %></td>
+            <td><%= emojis.join(' ') %></td>
 <% end %>
         </tr>
-<% end %>
+<% end %>        
       </tbody>
-    </table>
+    </table>  
+<% end %>
     <script src='emojify.js'></script>
     <script>
       emojify.setConfig({
