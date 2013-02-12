@@ -1,6 +1,10 @@
 require 'date'
 require 'erb'
 
+def days_in_month(date)
+  (Date.new(date.year, 12, 31) << (12 - date.month)).day
+end
+
 data = {}
 
 since = if ARGV.count == 0 then ""
@@ -11,16 +15,12 @@ since = if ARGV.count == 0 then ""
 
 commits = %x(git log #{since} --pretty=format:'%aE;%aD;%s')
 
-def days_in_month(date)
-  (Date.new(date.year, 12, 31) << (12 - date.month)).day
-end
-
 commits.each_line do |line|
   parts = line.split(';')
   email = parts[0]
   date = Date.parse(parts[1])
-  first_in_month = Date.new(date.year, date.month, 1)  
   emojis = parts[2].scan(/:[a-z]+:/)
+  first_in_month = Date.new(date.year, date.month, 1)
 
   unless data.key?(first_in_month) then
     data[first_in_month] = {}
