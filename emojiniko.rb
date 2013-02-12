@@ -3,10 +3,11 @@ require 'erb'
 
 data = {}
 
-since = if ARGV.count == 1 then
+since = if ARGV.count == 0 then ""
+        else
           from = Date.parse(ARGV[0])
           "--since'#{from.year}-#{from.month}-1'"
-        else "" end
+        end
 
 commits = %x(git log #{since} --pretty=format:'%aE;%aD;%s')
 
