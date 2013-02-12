@@ -3,11 +3,12 @@ require 'erb'
 
 data = {}
 
-commits = if ARGV.count == 1
-          then 
-            from = Date.parse(ARGV[0])
-            %x(git log --since='#{month.year}-#{month.month}-1' --pretty=format:'%aE;%aD;%s')
-          else %x(git log --pretty=format:'%aE;%aD;%s') end
+since = if ARGV.count == 1 then
+          from = Date.parse(ARGV[0])
+          "--since'#{from.year}-#{from.month}-1'"
+        else "" end
+
+commits = %x(git log #{since} --pretty=format:'%aE;%aD;%s')
 
 def days_in_month(date)
   (Date.new(date.year, 12, 31) << (12 - date.month)).day
@@ -65,11 +66,11 @@ days = days_in_month(month)
             <td><%= emojis.join(' ') %></td>
 <% end %>
         </tr>
-<% end %>       
+<% end %>
       </tbody>
-    </table>  
+    </table>
 <% end %>    
-    <script src='http:////hassankhan.github.com/emojify.js/javascripts/emojify.min.js'></script>
+    <script src='http://hassankhan.github.com/emojify.js/javascripts/emojify.min.js'></script>
     <script>
       emojify.setConfig({
           emojify_tag_type: 'div',
